@@ -1,0 +1,41 @@
+from email.mime.base import MIMEBase
+from email import encoders
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+
+#Send Email With Attatchment
+from_addr = "Email"
+to_addr = "Email"
+gmailpass = "App Password"
+msg = MIMEMultipart()
+msg['From'] = from_addr
+msg['To'] = to_addr
+msg['Subject'] = "Outdated Information"
+countForEmailPurposes = 1
+# string to store the body of the mail
+if countForEmailPurposes == 0:
+    body = "As of now there is no data that is out of date, CONGRATS"
+else:
+    body = "Here is the data that is considered out of date(120 days)"
+
+# attach the body with the msg instance
+msg.attach(MIMEText(body, 'plain'))
+filename = "OutOfDateMockData.xls"
+rb = "rb"
+
+#Change data name and location when you figure out that code
+attachment = open(r"File Location", "rb")
+content = attachment.read()
+print(content)
+p = MIMEBase('application', 'octet-stream')
+p.set_payload((attachment).read())
+encoders.encode_base64(p)
+p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+msg.attach(p)
+s = smtplib.SMTP('smtp.gmail.com', 587)
+s.starttls()
+s.login(from_addr, gmailpass)
+text = msg.as_string()
+s.sendmail(from_addr, to_addr, text)
+s.quit()
