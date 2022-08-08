@@ -1,0 +1,44 @@
+from openpyxl import load_workbook
+from datetime import date
+import datetime
+import xlsxwriter
+
+today = datetime.datetime.now()
+print("Today's date:", today)
+
+book = load_workbook('MockData.xlsx')
+sheet = book.active
+rows = sheet.rows
+headers = [cell.value for cell in next(rows)]
+
+# print(headers)
+
+##To read in data as a whole
+all_rows = []
+
+for row in rows:
+    data = {}
+    for title, cell in zip(headers, row):
+        data[title] = cell.value
+    print(data, ' ', sep='\n')
+    all_rows.append(data)
+
+# Program extracting just from date column
+column_d = sheet['D']
+all_dates = []
+out_dated = []
+dates ={}
+for cell in column_d:
+    cell.value = str(cell.value)
+    dates[cell] = datetime.datetime.strptime(cell.value, '%Y-%m-%d %H:%M:%S')
+    # print(f'{dates[cell ]}\n')
+    difference = today - dates[cell]
+    #print (difference)
+    if difference.days > 120:
+        out_dated.append(dates[cell])
+        print(difference.days)
+        print(f'{dates[cell]}\n')
+
+all_dates.append(dates)
+
+
