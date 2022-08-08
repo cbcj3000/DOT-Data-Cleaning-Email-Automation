@@ -1,0 +1,28 @@
+import smtplib
+countForEmailPurposes = 1
+#Send Email
+gmailpass = 'put in created password'
+from_addr = 'input email'
+to_addr = 'input email'
+subject = "Outdated Information"
+body = 'empty'
+if countForEmailPurposes == 0:
+    body = 'As of now there is no data that is out of date, CONGRATS'
+else:
+    body = 'Here is the data that is considered out of date(120 days)'
+##print(body)
+
+def send_email(subject, body):
+    try:
+        server = smtplib.SMTP('smtp.gmail.com:587')
+        server.ehlo()
+        server.starttls()
+        server.login(from_addr, gmailpass)
+        message = 'Subject: {}\n\n{}'.format(subject, body)
+        server.sendmail(from_addr, to_addr, body)
+        server.quit()
+        print("Email SENT :):)!!!!!")
+    except:
+        print("Email FAILED")
+
+send_email(subject, body)
