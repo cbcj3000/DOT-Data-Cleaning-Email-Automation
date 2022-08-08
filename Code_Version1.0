@@ -71,6 +71,7 @@ try:
         wb.save('OutOfDateMockData.xls')
 #Added because a KeyError shows up but it does not affect the code
 except KeyError:
+#This is the data that SHOULD be in the excel sheet
     print("Stephanie	Pear	7	1/5/2021")
     print("Jackson	Berry	4	7/8/2021")
     print("Sari	Orange	2	9/4/2021")
@@ -80,9 +81,9 @@ except KeyError:
 
 #Send Email With Attatchment
 #Variables created for important information
-from_addr = "dotsummer22@gmail.com"
-to_addr = "cbcj3000@gmail.com"
-gmailpass = "roeayjykyccyijnm"
+from_addr = "Email"
+to_addr = "Email"
+gmailpass = "App Password"
 msg = MIMEMultipart()
 msg['From'] = from_addr
 msg['To'] = to_addr
@@ -100,7 +101,7 @@ try:
     filename = "OutOfDateMockData.xls"
     rb = "rb"
     #Change change file location depending on file you are using
-    attachment = open(r"C:\Users\Cc-j2\PycharmProjects\pythonProject\OutOfDateMockData.xls", "rb")
+    attachment = open(r"File Location", "rb")
     content = attachment.read()
 
     #Add attachment to the email
