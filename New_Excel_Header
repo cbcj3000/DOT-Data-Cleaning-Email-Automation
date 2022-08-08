@@ -1,0 +1,6 @@
+new_excel = xlsxwriter.Workbook("OutDatedMockData.xlsx")
+new_sheet = new_excel.add_worksheet('NewData')
+new_sheet.write(0, 0, 'First')
+new_sheet.write(0, 1, "Last")
+new_sheet.write(0, 2, "Project Division")
+new_sheet.write(0, 3, "File Last Updated")
