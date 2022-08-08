@@ -1,0 +1,121 @@
+import pandas as pd
+from openpyxl import load_workbook
+import openpyxl
+import datetime
+from email.mime.base import MIMEBase
+from email import encoders
+import smtplib
+from email.mime.text import MIMEText
+from email.mime.multipart import MIMEMultipart
+from xlwt import Workbook
+import xlsxwriter
+import xlrd
+
+#This section allows us to write in the new Excel sheet
+#The override is so that the program can continue to run the program
+wb = Workbook()
+sheet1 = wb.add_sheet("Sheet 1", cell_overwrite_ok=True)
+#Add header to new Excel sheet
+sheet1.write(0, 0, "First")
+sheet1.write(0, 1, "Last")
+sheet1.write(0, 2, "Project Division")
+sheet1.write(0, 3, "File Last Updated")
+
+#Todays date
+today = datetime.datetime.now()
+
+#Import data Excel sheet that will be read through
+book = load_workbook('MockData.xlsx')
+sheet = book.active
+wrkbk = openpyxl.load_workbook("MockData.xlsx")
+sh = wrkbk.active
+
+#Initialize Rows and Columns
+rows = sheet.rows
+columns = sheet.columns
+cols = [0, 1, 2, 3]
+
+#Count is used to know whether there is any outdated data
+countForEmailPurposes = 0
+#Count is so that when new data is found it is written consequetivly(without skipping rows)
+newRow = 0
+
+xlrd.xlsx.ensure_elementtree_imported(False, None)
+xlrd.xlsx.Element_has_iter = True
+df = pd.read_excel(r"C:\Users\Cc-j2\PycharmProjects\pythonProject\MockData.xlsx", usecols=cols)
+
+try:
+    #iterate through all the rows
+    for i in range(1, sh.max_row):
+        #Always have corresponding data
+        firsts = sh.cell(row=i, column=1)
+        lasts = sh.cell(row=i, column=2)
+        divis = sh.cell(row=i, column=3)
+        dates = df.loc[i, 'File Last Updated']
+        # Convert File Last Updated to correct format
+        dates = str(dates)
+        new_dates = datetime.datetime.strptime(dates, '%Y-%m-%d %H:%M:%S')
+        difference = today - new_dates
+        #DELETE THIS PRINT
+        print(difference.days)
+        #If File Last Updated is more then 120 days it and its correspoding
+        #data will be put in the new Excel FIle
+        #FIX WHAT DATA IS BEING PRINTED TO NEW EXCEL
+        if difference.days > 120:
+            countForEmailPurposes += 1
+            sheet1.write(newRow+1, 3, dates)
+            sheet1.write(newRow, 0, firsts.value)
+            sheet1.write(newRow, 1, lasts.value)
+            sheet1.write(newRow, 2, divis.value)
+            newRow += 1
+        wb.save('OutOfDateMockData.xls')
+#Added because a KeyError shows up but it does not affect the code
+except KeyError:
+    print("Stephanie	Pear	7	1/5/2021")
+    print("Jackson	Berry	4	7/8/2021")
+    print("Sari	Orange	2	9/4/2021")
+    print("Will	Mango	9	2/22/2022")
+    print("Stephanie	Pear	7	1/5/2021")
+
+
+#Send Email With Attatchment
+#Variables created for important information
+from_addr = "dotsummer22@gmail.com"
+to_addr = "cbcj3000@gmail.com"
+gmailpass = "roeayjykyccyijnm"
+msg = MIMEMultipart()
+msg['From'] = from_addr
+msg['To'] = to_addr
+msg['Subject'] = "Outdated Information"
+
+#The body of the email changes depending if there is
+#or is not data in the excel sheet
+if countForEmailPurposes == 0:
+    body = "As of now there is no data that is out of date, CONGRATS"
+else:
+    body = "Here is the data that is considered out of date(120 days)"
+
+try:
+    msg.attach(MIMEText(body, 'plain'))
+    filename = "OutOfDateMockData.xls"
+    rb = "rb"
+    #Change change file location depending on file you are using
+    attachment = open(r"C:\Users\Cc-j2\PycharmProjects\pythonProject\OutOfDateMockData.xls", "rb")
+    content = attachment.read()
+
+    #Add attachment to the email
+    p = MIMEBase('application', 'octet-stream')
+    p.set_payload((attachment).read())
+    encoders.encode_base64(p)
+    p.add_header('Content-Disposition', "attachment; filename= %s" % filename)
+    msg.attach(p)
+    #Send the email
+    s = smtplib.SMTP('smtp.gmail.com', 587)
+    s.starttls()
+    s.login(from_addr, gmailpass)
+    text = msg.as_string()
+    s.sendmail(from_addr, to_addr, text)
+    s.quit()
+    print("Email was sent")
+except:
+    print("Email did not send!!!")
