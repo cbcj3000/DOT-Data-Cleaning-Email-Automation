@@ -1,4 +1,6 @@
 # DOT
+**This code was written n Python
+
 This repository includes the process and final script of the code described below:
 
 This code reads in data from an excel sheet.
@@ -9,4 +11,5 @@ If the New Excel sheet is empty then only a message is sent to the recipient.
 
 
 **This code was written for the NYC DOT Asset Management Unit
-**THis code was written n Python
+
+
