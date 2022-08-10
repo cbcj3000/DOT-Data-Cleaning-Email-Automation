@@ -41,7 +41,7 @@ newRow = 1
 
 xlrd.xlsx.ensure_elementtree_imported(False, None)
 xlrd.xlsx.Element_has_iter = True
-df = pd.read_excel(r"C:\Users\Cc-j2\PycharmProjects\pythonProject\MockData.xlsx", usecols=cols)
+df = pd.read_excel(r"file location", usecols=cols)
 
 try:
     #iterate through all the rows
@@ -97,7 +97,7 @@ try:
     filename = "OutOfDateMockData.xls"
     rb = "rb"
     #Change change file location depending on file you are using
-    attachment = open(r"C:\Users\Cc-j2\PycharmProjects\pythonProject\OutOfDateMockData.xls", "rb")
+    attachment = open(r"file location", "rb")
     content = attachment.read()
 
     #If statement is so that Excel is only attached if there is
