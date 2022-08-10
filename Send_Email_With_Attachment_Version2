@@ -1,0 +1,28 @@
+import smtplib
+from email.message import EmailMessage
+
+from_addr = "Email"
+to_addr = "Email"
+gmailpass = "App Password"
+msg = EmailMessage()
+msg['From'] = from_addr
+msg['To'] = to_addr
+msg['Subject'] = "Outdated Information"
+countForEmailPurposes = 1
+filename = "OutOfDateMockData.xls"
+
+#The body of the email changes depending if there is
+#or is not data in the excel sheet
+if countForEmailPurposes == 0:
+    body = "As of now there is no data that is out of date, CONGRATS"
+else:
+    body = "Here is the data that is considered out of date(120 days)"
+msg.set_content(body)
+
+with open(filename, 'rb') as f:
+    file_data = f.read()
+msg.add_attachment(file_data, maintype="application", subtype="xlsx", filename=filename)
+
+with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+    smtp.login(from_addr, gmailpass)
+    smtp.send_message(msg)
