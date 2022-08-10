@@ -42,7 +42,7 @@ newRow = 0
 
 xlrd.xlsx.ensure_elementtree_imported(False, None)
 xlrd.xlsx.Element_has_iter = True
-df = pd.read_excel(r"C:\Users\Cc-j2\PycharmProjects\pythonProject\MockData.xlsx", usecols=cols)
+df = pd.read_excel(r"location", usecols=cols)
 
 try:
     #iterate through all the rows
