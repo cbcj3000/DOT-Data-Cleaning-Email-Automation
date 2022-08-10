@@ -1,0 +1,109 @@
+import pandas as pd
+from openpyxl import load_workbook
+import openpyxl
+import datetime
+from xlwt import Workbook
+import xlrd
+import smtplib
+from email.message import EmailMessage
+
+#This section allows us to write in the new Excel sheet
+#The override is so that the program can continue to run the program
+wb = Workbook()
+sheet1 = wb.add_sheet("Sheet 1", cell_overwrite_ok=True)
+#Add header to new Excel sheet
+sheet1.write(0, 0, "First")
+sheet1.write(0, 1, "Last")
+sheet1.write(0, 2, "Project Division")
+sheet1.write(0, 3, "File Last Updated")
+
+#Todays date
+today = datetime.datetime.now()
+
+#Import data Excel sheet that will be read through
+book = load_workbook('MockData.xlsx')
+sheet = book.active
+wrkbk = openpyxl.load_workbook("MockData.xlsx")
+sh = wrkbk.active
+
+#Initialize Rows and Columns
+rows = sheet.rows
+columns = sheet.columns
+cols = [0, 1, 2, 3]
+
+#Count is used to know whether there is any outdated data
+countForEmailPurposes = 0
+#Count is so that when new data is found it is written consequetivly(without skipping rows)
+newRow = 1
+
+xlrd.xlsx.ensure_elementtree_imported(False, None)
+xlrd.xlsx.Element_has_iter = True
+df = pd.read_excel(r"file location", usecols=cols)
+
+try:
+    #Iterate through all the rows
+    for i in range(1, sh.max_row):
+        #Always have corresponding data
+        #You will have to adjust this portion depending on your
+        #Excel sheets columns
+        ff = df.loc[i, 'First']
+        ll = df.loc[i, 'Last']
+        #Number is converted to a String
+        dd = str(df.loc[i, 'Project Division'])
+        dates = df.loc[i, 'File Last Updated']
+        # Convert File Last Updated to correct format
+        dates = str(dates)
+        new_dates = datetime.datetime.strptime(dates, '%Y-%m-%d %H:%M:%S')
+        difference = today - new_dates
+        #If File Last Updated is more then 120 days it and its correspoding
+        #data will be put in the new Excel File
+        #FIX WHAT DATA IS BEING PRINTED TO NEW EXCEL
+        if difference.days > 120:
+            countForEmailPurposes += 1
+            # You will have to adjust this portion depending on your
+            # Excel sheets columns
+            sheet1.write(newRow, 3, dates)
+            sheet1.write(newRow, 0, ff)
+            sheet1.write(newRow, 1, ll)
+            sheet1.write(newRow, 2, dd)
+            newRow += 1
+        wb.save('OutOfDateMockData.xls')
+#Added because a KeyError shows up but it does not affect the code
+except KeyError:
+    print("")
+
+#Send Email With Attatchment(FROM A GOOGLE ACCOUNT)
+#Variables created for important information
+from_addr = "email"
+to_addr = "email"
+gmailpass = "app password"
+msg = EmailMessage()
+msg['From'] = from_addr
+msg['To'] = to_addr
+msg['Subject'] = "Outdated Information"
+filename = "OutOfDateMockData.xls"
+
+#The body of the email changes depending if there is
+#or is not data in the excel sheet
+if countForEmailPurposes == 0:
+    body = "As of now there is no data that is out of date, CONGRATS"
+else:
+    body = "Here is the data that is considered out of date(120 days)"
+msg.set_content(body)
+
+try:
+    #If statement is so that Excel is only attached if there is
+    #Out of date data
+    if countForEmailPurposes > 0:
+        #Add attachment to the email
+        with open(filename, 'rb') as f:
+            file_data = f.read()
+        msg.add_attachment(file_data, maintype="application", subtype="xlsx", filename=filename)
+
+    #Send the email
+    with smtplib.SMTP_SSL('smtp.gmail.com', 465) as smtp:
+        smtp.login(from_addr, gmailpass)
+        smtp.send_message(msg)
+    print("Email was sent")
+except:
+    print("Email did not send!!!")
