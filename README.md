@@ -1,25 +1,25 @@
 # DOT Data Cleaning and Email Automation
 **Tech Stack**
--Python / Excel
+- Python / Excel
 
--Libraries: pandas, openpyxl, smtplib, datetime, xlwt, xlrd, email.message
+- Libraries: pandas, openpyxl, smtplib, datetime, xlwt, xlrd, email.message
 
 **Key Features**
--Reads Excel data and checks date columns for outdated entries
--Generates a new Excel sheet with outdated data
--Sends email with attachment if outdated data exists
--Sends message only email if no outdated data
+- Reads Excel data and checks date columns for outdated entries
+- Generates a new Excel sheet with outdated data
+- Sends email with attachment if outdated data exists
+- Sends message only email if no outdated data
 
 **Setup Instructions**
--Clone this repo:
+- Clone this repo:
 git clone (https://github.com/cbcj3000/DOT-Data-Cleaning-Email-Automation/blob/main/Code_Version4.0)
--Run the script:
+- Run the script:
 python Code_Version4.0.py
 
 **Lessons Learned**
--Handling Excel date comparisons
--Automating email workflows from Python
--Reporting constant updates to a stakeholder
+- Handling Excel date comparisons
+- Automating email workflows from Python
+- Reporting constant updates to a stakeholder
 
 **Areas for Improvement**
 Add the ability for input parameters
