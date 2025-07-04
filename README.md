@@ -1,15 +1,28 @@
-# DOT
-**This code was written n Python
+# DOT Data Cleaning and Email Automation
+**Tech Stack**
+Python / Excel
 
-This repository includes the process and final script of the code described below:
+Libraries: pandas, openpyxl, smtplib, datetime, xlwt, xlrd, email.message
 
-This code reads in data from an excel sheet.
-It reads the date is each row of data and checks if it is outdated.
-If the date is out of date the corresponding data is put on a new Excel sheet.
-The new Excel sheet is then attached to an email with a message and sent to the desired recipient.
-If the New Excel sheet is empty then only a message is sent to the recipient.
+**Key Features**
+Reads Excel data and checks date columns for outdated entries
+Generates a new Excel sheet with outdated data
+Sends email with attachment if outdated data exists
+Sends message only email if no outdated data
 
+**Setup Instructions**
+Clone this repo:
+git clone (https://github.com/cbcj3000/DOT-Data-Cleaning-Email-Automation/blob/main/Code_Version4.0)
+Run the script:
+python Code_Version4.0.py
 
-**This code was written for the NYC DOT Asset Management Unit
+**Lessons Learned**
+Handling Excel date comparisons
+Automating email workflows from Python
+Reporting constant updates to a stakeholder
 
+**Areas for Improvement**
+Add the ability for input parameters
+Expand to handle Google Sheets as input/output
+Improve error handling and logging
 
