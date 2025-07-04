@@ -1,7 +1,6 @@
 # DOT Data Cleaning and Email Automation
 **Tech Stack**
 - Python / Excel
-
 - Libraries: pandas, openpyxl, smtplib, datetime, xlwt, xlrd, email.message
 
 **Key Features**
@@ -22,7 +21,7 @@ python Code_Version4.0.py
 - Reporting constant updates to a stakeholder
 
 **Areas for Improvement**
-Add the ability for input parameters
-Expand to handle Google Sheets as input/output
-Improve error handling and logging
+- Add the ability for input parameters
+- Expand to handle Google Sheets as input/output
+- Improve error handling and logging
 
