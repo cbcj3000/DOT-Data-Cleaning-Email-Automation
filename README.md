@@ -11,7 +11,7 @@
 
 **Setup Instructions**
 - Clone this repo:
-- ```git clone https://github.com/cbcj3000/DOT-Data-Cleaning-Email-Automation.git
+```git clone https://github.com/cbcj3000/DOT-Data-Cleaning-Email-Automation.git```
 
 
 - Run the script:
