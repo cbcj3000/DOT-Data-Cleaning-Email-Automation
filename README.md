@@ -12,10 +12,8 @@
 **Setup Instructions**
 - Clone this repo:
 ```git clone https://github.com/cbcj3000/DOT-Data-Cleaning-Email-Automation.git```
-
-
 - Run the script:
-python Code_Version4.0.py
+```python Code_Version4.0.py```
 
 **Lessons Learned**
 - Handling Excel date comparisons
